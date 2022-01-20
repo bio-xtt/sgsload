@@ -381,6 +381,7 @@ gain_signac <- function( # track_type,
 #' @author xtt
 #' @return a post information in json in format
 #' @export
+#' @useDynLib sgsload
 #'
 #' @examples
 #' \dontrun{
