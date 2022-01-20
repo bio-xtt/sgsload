@@ -1,0 +1,17 @@
+[
+    {
+        "file": "D:/xtt_docs/R_work/sgsload/src/matrix.cpp",
+        "file_last_write": 1642534800.0,
+        "definitions": [
+            {
+                "usr": "c:@F@asMatrix#I#I#I#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "asMatrix(int, int, int, int, int)",
+                "file": "D:/xtt_docs/R_work/sgsload/src/matrix.cpp",
+                "line": 6,
+                "column": 15
+            }
+        ]
+    }
+]
