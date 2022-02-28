@@ -13,6 +13,10 @@ ExportSC(
   assays,
   matrix.slot,
   assay.type,
+<<<<<<< HEAD
+=======
+  dir_path,
+>>>>>>> 943979c5ecf8cbec5baf2ebbbca37c6b53c9225e
   reductions = NULL,
   marker.files = NULL
 )
@@ -34,6 +38,11 @@ ExportSC(
 
 \item{assay.type}{a list of matrix type, mainly:"peak", "motif", "gene".list("RNA"="gene", "ATAC"="peak"; "motif"="motif")}
 
+<<<<<<< HEAD
+=======
+\item{dir_path}{the output dir}
+
+>>>>>>> 943979c5ecf8cbec5baf2ebbbca37c6b53c9225e
 \item{reductions}{a vector of reduction names to export}
 
 \item{marker.files}{a list of marker file path to export.list("RNA"="xxx.rna.tsv", "ATAC"="xxx.peak.tsv"; "motif"="xxx.motif.tsv")}
@@ -47,19 +56,30 @@ Export the seurat object into SGS
 \examples{
 \dontrun{
 #### Loadding the scRNA-seq object into SGS
+<<<<<<< HEAD
 library(Signac)
+=======
+>>>>>>> 943979c5ecf8cbec5baf2ebbbca37c6b53c9225e
 data("pbmc_small")
 marker_file <- system.file("extdata/scRNA", "markers.tsv", package = "sgsload")
 
 result_json <- ExportSC(
   object = pbmc_small,
+<<<<<<< HEAD
   species_id = "678d0bb42ebd4137b031ec5cc90dc0c5",
+=======
+  species_id = "00000",
+>>>>>>> 943979c5ecf8cbec5baf2ebbbca37c6b53c9225e
   track_name = "pbmc_small",
   track_type = "scRNA",
   select_group = c("groups", "RNA_snn_res.0.8", "letter.idents", "cluster"),
   assays = c("RNA"),
   matrix.slot = list("RNA" = "data"),
   assay.type = list("RNA" = "gene"),
+<<<<<<< HEAD
+=======
+  dir_path = "./out",
+>>>>>>> 943979c5ecf8cbec5baf2ebbbca37c6b53c9225e
   reductions = c("tsne", "umap"),
   marker.files = list("RNA" = marker_file)
 )
@@ -86,13 +106,21 @@ Fragments(atac) <- fragments
 
 result_json <- ExportSC(
   object = atac,
+<<<<<<< HEAD
   species_id = "678d0bb42ebd4137b031ec5cc90dc0c5",
+=======
+  species_id = "00000",
+>>>>>>> 943979c5ecf8cbec5baf2ebbbca37c6b53c9225e
   track_name = "atac",
   track_type = "scATAC",
   select_group = c("seurat_clusters"),
   assays = c("RNA", "chromvar", "peaks"),
   matrix.slot = list("RNA" = "data", "chromvar" = "data", "peaks" = "data"),
   assay.type = list("RNA" = "gene", "chromvar" = "motif", "peaks" = "peak"),
+<<<<<<< HEAD
+=======
+  dir_path = "./out",
+>>>>>>> 943979c5ecf8cbec5baf2ebbbca37c6b53c9225e
   reductions = c("lsi", "umap"),
   marker.files = markers
 )

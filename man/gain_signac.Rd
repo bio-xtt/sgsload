@@ -11,7 +11,12 @@ gain_signac(
   assay.type,
   select_group,
   reductions = NULL,
+<<<<<<< HEAD
   marker.files = NULL
+=======
+  marker.files = NULL,
+  out_dir
+>>>>>>> 943979c5ecf8cbec5baf2ebbbca37c6b53c9225e
 )
 }
 \arguments{
@@ -28,6 +33,11 @@ gain_signac(
 \item{reductions}{a vector of reduction name to export}
 
 \item{marker.files}{a list of marker file path to export.list("RNA"="xxx.rna.tsv", "ATAC"="xxx.peak.tsv"; "motif"="xxx.motif.tsv")}
+<<<<<<< HEAD
+=======
+
+\item{out_dir}{the output dir}
+>>>>>>> 943979c5ecf8cbec5baf2ebbbca37c6b53c9225e
 }
 \value{
 a list of information for single cell data load
@@ -45,7 +55,12 @@ gain_signac(
   assay.type = list("RNA" = "gene", "chromvar" = "motif", "peaks" = "peak"),
   select_group = c("seurat_clusters"),
   reductions = c("lsi", "umap"),
+<<<<<<< HEAD
   marker.files = list("RNA" = "marker_gene.tsv", "chromvar" = "marker_motif.tsv", "peaks" = "marker_peak.tsv")
+=======
+  marker.files = list("RNA" = "marker_gene.tsv", "chromvar" = "marker_motif.tsv", "peaks" = "marker_peak.tsv"),
+  out_dir = "xxx/out/"
+>>>>>>> 943979c5ecf8cbec5baf2ebbbca37c6b53c9225e
 )
 }
 

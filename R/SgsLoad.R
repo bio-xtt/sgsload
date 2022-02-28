@@ -75,8 +75,8 @@ gain_signac <- function(object,
                         assay.type,
                         select_group,
                         reductions = NULL,
-                        marker.files = NULL                      
-                        ) {
+                        marker.files = NULL
+) {
 
   ## look for seurat and check the version of object is the same as the version of the package
   if (!requireNamespace("Seurat", quietly = TRUE)) {
@@ -93,14 +93,14 @@ gain_signac <- function(object,
   if (objMaj != 2 && objMaj != 3 && objMaj != 4) {
     stop("can only process Seurat2, Seurat3  or Seurat4 objects, object was made with Seurat ", object@version)
   }
-  
-  
+
+
 
   ## post inform list
   post_list <- c()
-  
-  
-  
+
+
+
   #### make the output dir
   ## the dir used for post
   if (!requireNamespace("uuid")) install.packages("uuid")
@@ -125,7 +125,7 @@ gain_signac <- function(object,
     message("the output dir is:", dir_path)
   }
 
-  
+
   ## the debug dir: "./signac_study/pbmc_5k/test1"
   # dir_path <- "/home/sgs/signac_study/pbmc_500/new_test2"
   # if (!dir.exists(dir_path)) {
@@ -135,7 +135,7 @@ gain_signac <- function(object,
   #   message("the output dir is:", dir_path)
   # }
 
-  
+
 
   ############# gain the data from seurat
   #### gain the metadata
@@ -150,7 +150,7 @@ gain_signac <- function(object,
   rownames(meta_file) <- NULL
   meta_file <- as.data.frame(lapply(meta_file, as.character) )
   merged_file <- meta_file
-  
+
   # merged_file <- cbind(cell = rownames(metadata), metadata)
   # rownames(merged_file) <- NULL
   # merged_file <- as.data.frame(lapply(merged_file, as.character))
@@ -185,7 +185,7 @@ gain_signac <- function(object,
     # df <- cbind(cell = rownames(df), df)
     df <- data.frame(cell=rownames(x = df), df, check.names = FALSE)
     rownames(df) <- NULL
-    
+
     # ##########merged into metadata merged file
     merged_file <- merge(merged_file, df, by = "cell")
   }
@@ -213,17 +213,17 @@ gain_signac <- function(object,
       ## translate the gene name into lower
       colnames(counts_t) <- tolower(colnames(counts_t))
       exp_df_t <- cbind(cell = rownames(counts_t), counts_t)
-      
+
       ###add 2022.2.25
       un_fname <- unique(colnames(exp_df_t))
       exp_df_t <- exp_df_t[  ,un_fname]
       feature_names <- un_fname[-1]
-      
+
       rownames(exp_df_t) <- NULL
-      
+
       all_file <- merged_file
       all_file <- merge(exp_df_t, all_file, by = "cell", all = T)
-      
+
       ###unique the dataframe
       # un_name <- unique(colnames(all_file))
       # all_file <- all_file[ ,un_name]
@@ -237,7 +237,7 @@ gain_signac <- function(object,
       # feather::write_feather(merged_file, feaher_path )
       feather::write_feather(all_file, feaher_path)
 
-      
+
       #### judge wether the marker file is existed
       if (!is.null(marker.files) && !is.null(marker.files[i][[1]])) {
         marker <- marker.files[i][[1]]
@@ -282,7 +282,7 @@ gain_signac <- function(object,
           ## add tne related information
           new_pfm_path <- gsub("/home/sgs/data", "", pwm_file_path)
           all_exp_info$motif_pfm <- new_pfm_path
-          
+
         } else {
           message("not offer the marker motif or no pwm data in the object")
           all_exp_info$motif_pfm <- "null"
@@ -297,7 +297,7 @@ gain_signac <- function(object,
           co_file_path <- file.path(dir_path, sprintf("%s_coaccss.tsv", i))
           # co_file_path <- file.path(dir_path,"coaccss_score.tsv")
           write_tsv(co_data, file = co_file_path)
-          new_coacc_path <-  gsub("/home/sgs/data", "", co_file_path)  
+          new_coacc_path <-  gsub("/home/sgs/data", "", co_file_path)
           all_exp_info$co_access <- new_coacc_path
         } else {
           all_exp_info$co_access <- "null"
@@ -332,12 +332,12 @@ gain_signac <- function(object,
 
             # split_files <- paste(split_path, list.files(split_path))
             # s_path <- list(split_files)
-            new_split_path <- gsub("/home/sgs/data", "", split_path)  
+            new_split_path <- gsub("/home/sgs/data", "", split_path)
             s_path <- list(new_split_path)
             names(s_path) <- as.character(g)
             split_list <- append(split_list, s_path)
           }
-          
+
           all_exp_info$fragment <- split_list
         }
       } else {
@@ -367,7 +367,7 @@ gain_signac <- function(object,
   } else {
     stop("please offer the name of the assay to export")
   }
-  
+
   return(list(post_list, dir_path ))
 }
 
@@ -479,12 +479,12 @@ ExportSC <- function(object,
     reductions = reductions,
     marker.files = marker.files
   )
-  
-  post_list <- result[[1]]                   
+
+  post_list <- result[[1]]
   post_list$select_meta_columns <- select_group
   post_list$species_id <- species_id
   post_list$sc_name <- track_name
-  
+
 
   #### send the post
   header <- c(
@@ -506,7 +506,7 @@ ExportSC <- function(object,
   }
   post_json <- jsonlite::toJSON(post_list, auto_unbox = TRUE)
   post_body <- gsub("/home/sgs/data", "", post_json)
-  
+
   ###post send
   post_result <- httr::POST(url = post_url, body = post_body, encode = "json", add_headers(.headers = header))
   post_status <- httr::status_code(post_result)
@@ -514,19 +514,19 @@ ExportSC <- function(object,
   post_content <- httr::content(post_result)
 
   if (post_status == "200") {
-     message("the single cell track load successful!")
-   } else {
-   
-     #delete the dir
-     data_dir <- result[[2]]
+    message("the single cell track load successful!")
+  } else {
 
-     if(dir.exists(data_dir)){
-       unlink(data_dir, recursive = TRUE)
-     }
-     stop("the single cell track add failed")
-     message("post failed")
-   }
-  
+    #delete the dir
+    data_dir <- result[[2]]
+
+    if(dir.exists(data_dir)){
+      unlink(data_dir, recursive = TRUE)
+    }
+    stop("the single cell track add failed")
+    message("post failed")
+  }
+
   return(post_body)
-   # return(list(post_content, post_body))
+  # return(list(post_content, post_body))
 }
