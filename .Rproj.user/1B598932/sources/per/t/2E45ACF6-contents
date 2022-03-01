@@ -1,8 +1,0 @@
-devtools::document()
-library(roxygen2)
-roxygenize("/home/bio-xtt/Desktop/sgsload")
-usethis::use_rcpp()
-Rcpp::compileAttributes()
-devtools::document()
-roxygenize("/home/bio-xtt/Desktop/sgsload")
-check()
