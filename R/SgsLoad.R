@@ -102,7 +102,7 @@ gain_signac <- function(object,
 
 
   #### make the output dir
-  ## the dir used for post
+  # the dir used for post
   if (!requireNamespace("uuid")) install.packages("uuid")
   sc_id <- uuid::UUIDgenerate()
   message("the single cell id is:", sc_id)
@@ -127,7 +127,8 @@ gain_signac <- function(object,
 
 
   ## the debug dir: "./signac_study/pbmc_5k/test1"
-  # dir_path <- "/home/sgs/signac_study/pbmc_500/new_test2"
+  #"/home/sgs/signac_study/pbmc_500/new_test2"
+  # dir_path <- "./seurat_demo/pbmc3k/test_2022"
   # if (!dir.exists(dir_path)) {
   #   dir.create(path = dir_path)
   #   message("the output dir is:", dir_path)
@@ -143,7 +144,15 @@ gain_signac <- function(object,
 
   # add meta column inform
   all_meta_column <- colnames(metadata)
-  post_list$all_meta_columns <- all_meta_column
+  ###this has changed 2022.3.1
+  ##old
+  # post_list$all_meta_columns <- all_meta_column
+  if (length(all_meta_column) > 1) {
+    post_list$all_meta_columns <- all_meta_column
+  }else{
+    post_list$all_meta_columns <- list(all_meta_column)
+  }
+
 
   ## gain the merge file
   meta_file <- data.frame(cell = rownames(metadata), metadata, check.rows = FALSE)
@@ -168,7 +177,15 @@ gain_signac <- function(object,
   }
 
   ## add cell plots type
-  post_list$cell_plots <- reducNames
+  ##this changed 2022.3.1
+  ##old
+  # post_list$cell_plots <- reducNames
+  ##new
+  if (length(reducNames) > 1) {
+    post_list$cell_plots <- reducNames
+  }else{
+    post_list$cell_plots <- list(reducNames)
+  }
 
   for (embedding in reducNames) {
     emb <- dr[[embedding]]
@@ -481,7 +498,19 @@ ExportSC <- function(object,
   )
 
   post_list <- result[[1]]
-  post_list$select_meta_columns <- select_group
+
+  ##########this has changed 2022.3.1
+  ##old
+  # post_list$select_meta_columns <- select_group
+
+  ##new
+  if (length(select_group) > 1) {
+    post_list$select_meta_columns <- select_group
+
+  }else{
+    post_list$select_meta_columns <- list(select_group)
+  }
+
   post_list$species_id <- species_id
   post_list$sc_name <- track_name
 
@@ -504,7 +533,8 @@ ExportSC <- function(object,
     post_list$sc_type <- "atac"
     post_url <- "http://orthovenn2.bioinfotoolkits.net:6102/api/sc/add/signac"
   }
-  post_json <- jsonlite::toJSON(post_list, auto_unbox = TRUE)
+
+  post_json <- jsonlite::toJSON(post_list, auto_unbox = TRUE, pretty = TRUE)
   post_body <- gsub("/home/sgs/data", "", post_json)
 
   ###post send
