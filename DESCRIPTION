@@ -10,11 +10,8 @@ Description: This package is used to load Seurat object into SGS cellbrowser for
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-<<<<<<< HEAD
 RoxygenNote: 7.1.1
-=======
 RoxygenNote: 7.1.2
->>>>>>> 943979c5ecf8cbec5baf2ebbbca37c6b53c9225e
 Imports: 
     tidyverse,
     feather,
