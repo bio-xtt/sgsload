@@ -425,6 +425,9 @@ gain_signac <- function(object,
 #'
 #' @examples
 #' \dontrun{
+#' ###Getting the species id information
+#' species_id_inform <- get_species_inform(user_id = "user001")
+#'
 #' #### Loadding the scRNA-seq object into SGS
 #' library(Signac)
 #' data("pbmc_small")
@@ -506,7 +509,6 @@ ExportSC <- function(object,
   ##new
   if (length(select_group) > 1) {
     post_list$select_meta_columns <- select_group
-
   }else{
     post_list$select_meta_columns <- list(select_group)
   }
@@ -541,12 +543,13 @@ ExportSC <- function(object,
   post_result <- httr::POST(url = post_url, body = post_body, encode = "json", add_headers(.headers = header))
   post_status <- httr::status_code(post_result)
 
-  post_content <- httr::content(post_result)
 
   if (post_status == "200") {
     message("the single cell track load successful!")
-  } else {
+    post_content <- httr::content(post_result)
+    post_content_json <- jsonlite::toJSON(post_content, auto_unbox = TRUE, pretty = TRUE)
 
+  } else {
     #delete the dir
     data_dir <- result[[2]]
 
@@ -557,6 +560,67 @@ ExportSC <- function(object,
     message("post failed")
   }
 
-  return(post_body)
+  return(post_content_json)
   # return(list(post_content, post_body))
 }
+
+
+
+
+
+#' Get the species id information
+#' @param user_id a string of the user id, defualt user id is "user001".
+#' @importFrom httr POST add_headers status_code content verbose
+#' @importFrom jsonlite write_json toJSON
+#' @return a json string of the species id information
+#' @author xtt
+#' @export
+#' @useDynLib sgsload
+#' @examples
+#' \dontrun{
+#' species_id <- get_species_inform(user_id)
+#' }
+#'
+#'
+get_species_inform <- function(user_id = user_id){
+  if(!is.null(user_id)){
+    user_id <- user_id
+  }else{
+    user_id <- "user001"
+  }
+
+  header <- c(
+    "Content-Type" = "application/json",
+    "Accept" = "application/json, text/javascript, */*; q=0.01",
+    "Accept-Encoding" = "gzip, deflate, br",
+    "Connection" = "keep-alive")
+
+  ##set the pos url
+  post_url <- "http://47.74.241.105:6102/api/species/list"
+  post_body <- list(user_id=user_id)
+  # post_body <- list(user_id="user001")
+  post_json <- jsonlite::toJSON(post_body, auto_unbox = TRUE, pretty = TRUE)
+  post_result <- httr::POST(url = post_url, body = post_body, encode = "json", add_headers(.headers = header) ,verbose())
+  post_status <- httr::status_code(post_result)
+
+  if (post_status == "200") {
+    message("get species id information successful!")
+    post_content <- httr::content(post_result)
+    post_content_json <- jsonlite::toJSON(post_content, auto_unbox = TRUE, pretty = TRUE)
+    print(post_content_json)
+  } else {
+    stop("get the species id information failed!")
+  }
+  return(post_content_json)
+}
+
+
+
+
+
+
+
+
+
+
+

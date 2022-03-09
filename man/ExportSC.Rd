@@ -13,7 +13,6 @@ ExportSC(
   assays,
   matrix.slot,
   assay.type,
-  dir_path,
   reductions = NULL,
   marker.files = NULL
 )
@@ -35,10 +34,6 @@ ExportSC(
 
 \item{assay.type}{a list of matrix type, mainly:"peak", "motif", "gene".list("RNA"="gene", "ATAC"="peak"; "motif"="motif")}
 
-
-
-\item{dir_path}{the output dir}
-
 \item{reductions}{a vector of reduction names to export}
 
 \item{marker.files}{a list of marker file path to export.list("RNA"="xxx.rna.tsv", "ATAC"="xxx.peak.tsv"; "motif"="xxx.motif.tsv")}
@@ -51,6 +46,9 @@ Export the seurat object into SGS
 }
 \examples{
 \dontrun{
+###Getting the species id information
+species_id_inform <- get_species_inform(user_id = "user001")
+
 #### Loadding the scRNA-seq object into SGS
 library(Signac)
 data("pbmc_small")
@@ -59,14 +57,12 @@ marker_file <- system.file("extdata/scRNA", "markers.tsv", package = "sgsload")
 result_json <- ExportSC(
   object = pbmc_small,
   species_id = "678d0bb42ebd4137b031ec5cc90dc0c5",
-  species_id = "00000",
   track_name = "pbmc_small",
   track_type = "scRNA",
   select_group = c("groups", "RNA_snn_res.0.8", "letter.idents", "cluster"),
   assays = c("RNA"),
   matrix.slot = list("RNA" = "data"),
   assay.type = list("RNA" = "gene"),
-  dir_path = "./out",
   reductions = c("tsne", "umap"),
   marker.files = list("RNA" = marker_file)
 )
@@ -94,16 +90,15 @@ Fragments(atac) <- fragments
 result_json <- ExportSC(
   object = atac,
   species_id = "678d0bb42ebd4137b031ec5cc90dc0c5",
-  species_id = "00000",
   track_name = "atac",
   track_type = "scATAC",
   select_group = c("seurat_clusters"),
   assays = c("RNA", "chromvar", "peaks"),
   matrix.slot = list("RNA" = "data", "chromvar" = "data", "peaks" = "data"),
   assay.type = list("RNA" = "gene", "chromvar" = "motif", "peaks" = "peak"),
-  dir_path = "./out",
   reductions = c("lsi", "umap"),
-  marker.files = markers)
+  marker.files = markers
+)
 }
 
 }
