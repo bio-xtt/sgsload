@@ -26,44 +26,9 @@ library(sgsload)
 # get the speices id information
 get_species_inform(user_id)
 
--> POST /api/species/list HTTP/1.1
--> Host: 47.74.241.105:6102
--> User-Agent: libcurl/7.68.0 r-curl/4.3.2 httr/1.4.2
--> Content-Type: application/json
--> Accept: application/json, text/javascript, */*; q=0.01
--> Accept-Encoding: gzip, deflate, br
--> Connection: keep-alive
--> Content-Length: 21
--> 
->> {"user_id":"user001"}
+```
 
-<- HTTP/1.0 200 OK
-<- Content-Type: application/json
-<- Content-Length: 427
-<- Server: Werkzeug/2.0.1 Python/3.9.5
-<- Date: Wed, 09 Mar 2022 07:15:35 GMT
-<- 
-get species id information successful!
-{
-  "species_list": [
-    {
-      "species_id": "11f4cd32439248149ac6a6ba46f91d00",
-      "species_name": "mouse",
-      "species_status": "done"
-    },
-    {
-      "species_id": "25542c58734641fe98ba9f6b51d17a20",
-      "species_name": "hg19",
-      "species_status": "done"
-    },
-    {
-      "species_id": "a7753f99184544eaaebbf6f22a2e5dfd",
-      "species_name": "ecoli",
-      "species_status": "done"
-    }
-  ]
-} 
-
+```
 # load the example datasets: pbmc_small
 data("pbmc_small")
 
