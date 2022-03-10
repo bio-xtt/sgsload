@@ -87,8 +87,6 @@ gain_signac <- function(object,
   message("Object was created with Seurat version ", object@version)
 
   objMaj <- package_version(object@version)$major
-  # pkgMaj <- package_version(packageVersion("Seurat"))$major
-
 
   if (objMaj != 2 && objMaj != 3 && objMaj != 4) {
     stop("can only process Seurat2, Seurat3  or Seurat4 objects, object was made with Seurat ", object@version)
@@ -126,27 +124,12 @@ gain_signac <- function(object,
   }
 
 
-  ## the debug dir: "./signac_study/pbmc_5k/test1"
-  #"/home/sgs/signac_study/pbmc_500/new_test2"
-  # dir_path <- "./seurat_demo/pbmc3k/test_2022"
-  # if (!dir.exists(dir_path)) {
-  #   dir.create(path = dir_path)
-  #   message("the output dir is:", dir_path)
-  # } else {
-  #   message("the output dir is:", dir_path)
-  # }
-
-
-
   ############# gain the data from seurat
   #### gain the metadata
   metadata <- object[[]]
 
   # add meta column inform
   all_meta_column <- colnames(metadata)
-  ###this has changed 2022.3.1
-  ##old
-  # post_list$all_meta_columns <- all_meta_column
   if (length(all_meta_column) > 1) {
     post_list$all_meta_columns <- all_meta_column
   }else{
@@ -160,12 +143,6 @@ gain_signac <- function(object,
   meta_file <- as.data.frame(lapply(meta_file, as.character) )
   merged_file <- meta_file
 
-  # merged_file <- cbind(cell = rownames(metadata), metadata)
-  # rownames(merged_file) <- NULL
-  # merged_file <- as.data.frame(lapply(merged_file, as.character))
-
-
-
 
   #### Export cell embeddings/reductions for merge
   # Export cell embeddings/reductions
@@ -177,10 +154,6 @@ gain_signac <- function(object,
   }
 
   ## add cell plots type
-  ##this changed 2022.3.1
-  ##old
-  # post_list$cell_plots <- reducNames
-  ##new
   if (length(reducNames) > 1) {
     post_list$cell_plots <- reducNames
   }else{
@@ -241,17 +214,12 @@ gain_signac <- function(object,
       all_file <- merged_file
       all_file <- merge(exp_df_t, all_file, by = "cell", all = T)
 
-      ###unique the dataframe
-      # un_name <- unique(colnames(all_file))
-      # all_file <- all_file[ ,un_name]
-
       ## make the file name
       feaher_path <- file.path(
         dir_path,
         sprintf("%s_exp.feather", i)
       )
 
-      # feather::write_feather(merged_file, feaher_path )
       feather::write_feather(all_file, feaher_path)
 
 
@@ -282,8 +250,6 @@ gain_signac <- function(object,
         all_exp_info$matrix_type <- "motif"
 
         if (!is.null(marker.files[i][[1]]) && length(GetMotifData(object = object, slot = "pwm")) > 0) {
-
-          # DefaultAssay(object = object) <- main.assay
           pwm_data <- GetMotifData(object = object, slot = "pwm")
           motif_name <- GetMotifData(object = object, slot = "motif.names")
           new_pwm_name <- as.vector(paste(names(pwm_data), motif_name, sep = "_"))
@@ -306,13 +272,11 @@ gain_signac <- function(object,
         }
       } else if (assay.type[i][[1]] == "peak") {
         all_exp_info$matrix_type <- "peak"
-        # DefaultAssay(object = object) <- main.assay
 
         ### gain the coaccss data
         if (length(Links(object = object)) > 0) {
           co_data <- as.data.frame(Links(object = object))
           co_file_path <- file.path(dir_path, sprintf("%s_coaccss.tsv", i))
-          # co_file_path <- file.path(dir_path,"coaccss_score.tsv")
           write_tsv(co_data, file = co_file_path)
           new_coacc_path <-  gsub("/home/sgs/data", "", co_file_path)
           all_exp_info$co_access <- new_coacc_path
@@ -347,8 +311,6 @@ gain_signac <- function(object,
               group.by = g,
               outdir = split_path)
 
-            # split_files <- paste(split_path, list.files(split_path))
-            # s_path <- list(split_files)
             new_split_path <- gsub("/home/sgs/data", "", split_path)
             s_path <- list(new_split_path)
             names(s_path) <- as.character(g)
@@ -428,7 +390,7 @@ gain_signac <- function(object,
 #' ###Getting the species id information
 #' species_id_inform <- get_species_inform(user_id = "user001")
 #'
-#' #### Loadding the scRNA-seq object into SGS
+#' #### Loadding the human scRNA-seq object into SGS
 #' library(Signac)
 #' data("pbmc_small")
 #' marker_file <- system.file("extdata/scRNA", "markers.tsv", package = "sgsload")
@@ -447,7 +409,7 @@ gain_signac <- function(object,
 #' )
 #'
 #'
-#' #### Loadding the scATAC-seq object into SGS
+#' #### Loadding the human scATAC-seq object into SGS
 #' data("atac")
 #' marker_genes <- system.file("extdata/scATAC", "marker_genes.tsv", package = "sgsload")
 #' marker_motifs <- system.file("extdata/scATAC", "marker_motif.tsv", package = "sgsload")
@@ -502,11 +464,6 @@ ExportSC <- function(object,
 
   post_list <- result[[1]]
 
-  ##########this has changed 2022.3.1
-  ##old
-  # post_list$select_meta_columns <- select_group
-
-  ##new
   if (length(select_group) > 1) {
     post_list$select_meta_columns <- select_group
   }else{
@@ -528,12 +485,11 @@ ExportSC <- function(object,
   # ####gain post url
   if(track_type == "scRNA"){
     post_list$sc_type <- "transcript"
-    post_url <- "http://orthovenn2.bioinfotoolkits.net:6102/api/sc/add/seurat"
-    # post_url <- "http://47.74.241.105:6102/api/sc/add/seurat"
+    post_url <- "http://47.74.241.105:6102/api/sc/add/seurat"
 
   }else if(track_type == "scATAC"){
     post_list$sc_type <- "atac"
-    post_url <- "http://orthovenn2.bioinfotoolkits.net:6102/api/sc/add/signac"
+    post_url <- "http://47.74.241.105:6102/api/sc/add/signac"
   }
 
   post_json <- jsonlite::toJSON(post_list, auto_unbox = TRUE, pretty = TRUE)
@@ -550,18 +506,17 @@ ExportSC <- function(object,
     post_content_json <- jsonlite::toJSON(post_content, auto_unbox = TRUE, pretty = TRUE)
 
   } else {
-    #delete the dir
-    data_dir <- result[[2]]
-
-    if(dir.exists(data_dir)){
-      unlink(data_dir, recursive = TRUE)
-    }
     stop("the single cell track add failed")
     message("post failed")
   }
 
+  #delete the dir
+  data_dir <- result[[2]]
+
+  if(dir.exists(data_dir)){
+    unlink(data_dir, recursive = TRUE)
+  }
   return(post_content_json)
-  # return(list(post_content, post_body))
 }
 
 
@@ -578,7 +533,7 @@ ExportSC <- function(object,
 #' @useDynLib sgsload
 #' @examples
 #' \dontrun{
-#' species_id <- get_species_inform(user_id)
+#' get_species_inform(user_id)
 #' }
 #'
 #'
@@ -598,7 +553,6 @@ get_species_inform <- function(user_id = user_id){
   ##set the pos url
   post_url <- "http://47.74.241.105:6102/api/species/list"
   post_body <- list(user_id=user_id)
-  # post_body <- list(user_id="user001")
   post_json <- jsonlite::toJSON(post_body, auto_unbox = TRUE, pretty = TRUE)
   post_result <- httr::POST(url = post_url, body = post_body, encode = "json", add_headers(.headers = header) ,verbose())
   post_status <- httr::status_code(post_result)
@@ -611,7 +565,7 @@ get_species_inform <- function(user_id = user_id){
   } else {
     stop("get the species id information failed!")
   }
-  return(post_content_json)
+  # return(post_content_json)
 }
 
 

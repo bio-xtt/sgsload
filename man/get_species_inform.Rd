@@ -17,7 +17,7 @@ Get the species id information
 }
 \examples{
 \dontrun{
-species_id <- get_species_inform(user_id)
+get_species_inform(user_id)
 }
 
 

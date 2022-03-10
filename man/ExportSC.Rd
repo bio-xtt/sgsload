@@ -49,7 +49,7 @@ Export the seurat object into SGS
 ###Getting the species id information
 species_id_inform <- get_species_inform(user_id = "user001")
 
-#### Loadding the scRNA-seq object into SGS
+#### Loadding the human scRNA-seq object into SGS
 library(Signac)
 data("pbmc_small")
 marker_file <- system.file("extdata/scRNA", "markers.tsv", package = "sgsload")
@@ -68,7 +68,7 @@ result_json <- ExportSC(
 )
 
 
-#### Loadding the scATAC-seq object into SGS
+#### Loadding the human scATAC-seq object into SGS
 data("atac")
 marker_genes <- system.file("extdata/scATAC", "marker_genes.tsv", package = "sgsload")
 marker_motifs <- system.file("extdata/scATAC", "marker_motif.tsv", package = "sgsload")
