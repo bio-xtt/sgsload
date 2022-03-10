@@ -506,16 +506,17 @@ ExportSC <- function(object,
     post_content_json <- jsonlite::toJSON(post_content, auto_unbox = TRUE, pretty = TRUE)
 
   } else {
+    #delete the dir
+    data_dir <- result[[2]]
+
+    if(dir.exists(data_dir)){
+      unlink(data_dir, recursive = TRUE)
+    }
     stop("the single cell track add failed")
     message("post failed")
   }
 
-  #delete the dir
-  data_dir <- result[[2]]
 
-  if(dir.exists(data_dir)){
-    unlink(data_dir, recursive = TRUE)
-  }
   return(post_content_json)
 }
 
