@@ -234,7 +234,7 @@ gain_signac <- function(object,
         }
       } else {
         message("you dont give the marker file path, we suggests you offer one")
-        marker_path <- "null"
+        marker_path <- ""
       }
 
 
@@ -264,12 +264,11 @@ gain_signac <- function(object,
 
           ## add tne related information
           new_pfm_path <- gsub("/home/sgs/data", "", pwm_file_path)
-          all_exp_info$motif_pfm <- new_pfm_path
-
-        } else {
-          message("not offer the marker motif or no pwm data in the object")
-          all_exp_info$motif_pfm <- "null"
-        }
+          all_exp_info$motif_pfm <- new_pfm_path }
+         #} else {
+        # message("not offer the marker motif or no pwm data in the object")
+        #all_exp_info$motif_pfm <- ""
+        #}
       } else if (assay.type[i][[1]] == "peak") {
         all_exp_info$matrix_type <- "peak"
 
@@ -279,10 +278,10 @@ gain_signac <- function(object,
           co_file_path <- file.path(dir_path, sprintf("%s_coaccss.tsv", i))
           write_tsv(co_data, file = co_file_path)
           new_coacc_path <-  gsub("/home/sgs/data", "", co_file_path)
-          all_exp_info$co_access <- new_coacc_path
-        } else {
-          all_exp_info$co_access <- "null"
-        }
+          all_exp_info$co_access <- new_coacc_path }
+        # } else {
+        #   all_exp_info$co_access <- "null"
+        # }
 
         #### gain the the coverge bed files
         if (length(Fragments(object[[i]])) > 0) {
