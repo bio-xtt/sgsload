@@ -101,4 +101,5 @@ result_json2 <- ExportSC(
 the function returns the status of loadding single cell object into SGS cellbrowser:  
 
 1:loadding successfull! 
+
 2:loadding failed  
