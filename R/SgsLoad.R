@@ -565,7 +565,7 @@ get_species_inform <- function(user_id = user_id){
   } else {
     stop("get the species id information failed!")
   }
-  # return(post_content_json)
+  return(post_content_json)
 }
 
 
