@@ -36,17 +36,17 @@ data("pbmc_small")
 marker_file <- system.file("extdata/scRNA", "markers.tsv", package = "sgsload")
 
 # use the export function
-result_json <- ExportToSGS(
+result_json <- ExportSC(
   object = pbmc_small,
-  species_id = "678d0bb42ebd4137b031ec5cc90dc0c5",
+  species_id = "25542c58734641fe98ba9f6b51d17a20",
   track_name = "pbmc_small",
   track_type = "scRNA",
   select_group = c("groups", "RNA_snn_res.0.8", "letter.idents", "cluster"),
-  assays = c("RNA"),
+  assays = "RNA",
   matrix.slot = list("RNA" = "data"),
   assay.type = list("RNA" = "gene"),
   reductions = c("tsne", "umap"),
-  marker.files = list("RNA" = marker_file) )
+  marker.files = list("RNA" = marker_file))
 ```
 
 
@@ -83,16 +83,16 @@ Fragments(atac) <- NULL
 Fragments(atac) <- fragments
 
 # use the export function to loadding the scATAC object into SGS cellbrowser
-result <- ExportSC(
+result_json2 <- ExportSC(
   object = atac,
-  species_id = "678d0bb42ebd4137b031ec5cc90dc0c5",
-  track_name = "atac",
+  species_id = "25542c58734641fe98ba9f6b51d17a20",
+  track_name = "atac_demo",
   track_type = "scATAC",
   select_group = c("seurat_clusters"),
   assays = c("RNA", "chromvar", "peaks"),
   matrix.slot = list("RNA" = "data", "chromvar" = "data", "peaks" = "data"),
   assay.type = list("RNA" = "gene", "chromvar" = "motif", "peaks" = "peak"),
-  reductions = c("lsi", "umap"),
+  reductions = "umap",
   marker.files = markers)
 ```
 
