@@ -7,7 +7,7 @@ the package can install from github like this:
 
 ```
 # install from github
-devtools::install_github("bio-xtt/sgs_test") 
+devtools::install_github("bio-xtt/sgsload") 
 
 # install from source
 install.packages("/home/bio-xtt/Desktop/sgsload_0.1.0.tar.gz", type=source)
@@ -23,7 +23,7 @@ quickly loadding a scRNAseq object created by Seurat into SGS cellbrowser
 # load the package
 library(sgsload)
 
-# get the speices id information
+# get the speices id information, the default userid is "user001".
 get_species_inform(user_id)
 
 ```
